@@ -1,0 +1,193 @@
+variant,metric,suite,benchmark,arm,arm_name,eligible_tasks,estimate,ci_lo,ci_hi
+majority,gain,valid-seen,"ALFWorld, seen",awm,AWM,3,33.3333,0.0000,100.0000
+majority,gain,valid-seen,"ALFWorld, seen",reasoningbank,ReasoningBank,3,11.1111,0.0000,33.3333
+majority,gain,valid-seen,"ALFWorld, seen",expel,ExpeL,3,44.4444,0.0000,100.0000
+majority,gain,valid-seen,"ALFWorld, seen",ace,ACE,3,88.8889,66.6667,100.0000
+majority,gain,valid-seen,"ALFWorld, seen",00I-inject,Knowledge Injection,3,33.3333,0.0000,100.0000
+majority,gain,valid-seen,"ALFWorld, seen",RCI-traverse,WikiTrace,3,55.5556,33.3333,100.0000
+majority,gain,valid-unseen,"ALFWorld, unseen",awm,AWM,7,85.7143,66.6667,100.0000
+majority,gain,valid-unseen,"ALFWorld, unseen",reasoningbank,ReasoningBank,7,61.9048,40.0000,85.7143
+majority,gain,valid-unseen,"ALFWorld, unseen",expel,ExpeL,7,95.2381,83.3333,100.0000
+majority,gain,valid-unseen,"ALFWorld, unseen",ace,ACE,7,100.0000,100.0000,100.0000
+majority,gain,valid-unseen,"ALFWorld, unseen",00I-inject,Knowledge Injection,7,100.0000,100.0000,100.0000
+majority,gain,valid-unseen,"ALFWorld, unseen",RCI-traverse,WikiTrace,7,100.0000,100.0000,100.0000
+majority,gain,scienceworld,ScienceWorld,awm,AWM,29,45.9770,33.3333,58.6207
+majority,gain,scienceworld,ScienceWorld,reasoningbank,ReasoningBank,29,37.9310,25.3968,51.1905
+majority,gain,scienceworld,ScienceWorld,expel,ExpeL,29,50.5747,37.5000,63.3333
+majority,gain,scienceworld,ScienceWorld,ace,ACE,29,65.5172,52.7778,77.3810
+majority,gain,scienceworld,ScienceWorld,00I-inject,Knowledge Injection,29,64.3678,49.3827,78.5714
+majority,gain,scienceworld,ScienceWorld,RCI-traverse,WikiTrace,29,68.9655,55.5556,81.1594
+majority,gain,plancraft-seen,"PlanCraft, seen",awm,AWM,29,35.6322,25.0000,46.3768
+majority,gain,plancraft-seen,"PlanCraft, seen",reasoningbank,ReasoningBank,29,57.4713,44.4444,70.6677
+majority,gain,plancraft-seen,"PlanCraft, seen",expel,ExpeL,29,33.3333,23.0769,44.4444
+majority,gain,plancraft-seen,"PlanCraft, seen",ace,ACE,29,89.6552,80.9524,96.5517
+majority,gain,plancraft-seen,"PlanCraft, seen",00I-inject,Knowledge Injection,29,70.1149,57.8431,81.4815
+majority,gain,plancraft-seen,"PlanCraft, seen",RCI-traverse,WikiTrace,29,79.3103,66.6667,90.3226
+majority,gain,plancraft-unseen,"PlanCraft, unseen",awm,AWM,46,24.6377,15.0794,34.9593
+majority,gain,plancraft-unseen,"PlanCraft, unseen",reasoningbank,ReasoningBank,46,29.7101,19.6581,40.5415
+majority,gain,plancraft-unseen,"PlanCraft, unseen",expel,ExpeL,46,13.7681,7.2458,21.2766
+majority,gain,plancraft-unseen,"PlanCraft, unseen",ace,ACE,46,86.9565,78.7028,94.0000
+majority,gain,plancraft-unseen,"PlanCraft, unseen",00I-inject,Knowledge Injection,46,50.0000,39.4737,60.4167
+majority,gain,plancraft-unseen,"PlanCraft, unseen",RCI-traverse,WikiTrace,46,64.4928,54.2852,74.2138
+majority,gain,retail,"$\tau^3$-bench, Retail",awm,AWM,6,38.8889,0.0000,76.1905
+majority,gain,retail,"$\tau^3$-bench, Retail",reasoningbank,ReasoningBank,6,33.3333,0.0000,66.6667
+majority,gain,retail,"$\tau^3$-bench, Retail",expel,ExpeL,6,33.3333,8.3333,57.7083
+majority,gain,retail,"$\tau^3$-bench, Retail",ace,ACE,6,44.4444,22.2222,66.6667
+majority,gain,retail,"$\tau^3$-bench, Retail",00I-inject,Knowledge Injection,6,44.4444,11.1111,77.7778
+majority,gain,retail,"$\tau^3$-bench, Retail",RCI-traverse,WikiTrace,6,38.8889,8.3333,72.2222
+majority,gain,test-normal,"AppWorld, normal",awm,AWM,26,44.8718,33.3333,57.9710
+majority,gain,test-normal,"AppWorld, normal",reasoningbank,ReasoningBank,26,42.3077,29.1667,55.5556
+majority,gain,test-normal,"AppWorld, normal",expel,ExpeL,26,53.8462,38.5951,68.6275
+majority,gain,test-normal,"AppWorld, normal",ace,ACE,26,64.1026,48.8889,78.4314
+majority,gain,test-normal,"AppWorld, normal",00I-inject,Knowledge Injection,26,66.6667,51.3889,80.9524
+majority,gain,test-normal,"AppWorld, normal",RCI-traverse,WikiTrace,26,66.6667,51.8519,80.3922
+majority,gain,test-challenge,"AppWorld, challenge",awm,AWM,26,20.5128,11.1029,31.1111
+majority,gain,test-challenge,"AppWorld, challenge",reasoningbank,ReasoningBank,26,26.9231,13.3333,42.3077
+majority,gain,test-challenge,"AppWorld, challenge",expel,ExpeL,26,26.9231,14.0351,41.3333
+majority,gain,test-challenge,"AppWorld, challenge",ace,ACE,26,42.3077,26.3889,58.3333
+majority,gain,test-challenge,"AppWorld, challenge",00I-inject,Knowledge Injection,26,30.7692,15.7394,47.1264
+majority,gain,test-challenge,"AppWorld, challenge",RCI-traverse,WikiTrace,26,44.8718,28.1236,61.7284
+majority,regression,valid-seen,"ALFWorld, seen",awm,AWM,98,3.4014,1.0417,6.2500
+majority,regression,valid-seen,"ALFWorld, seen",reasoningbank,ReasoningBank,98,5.4422,2.4306,9.0278
+majority,regression,valid-seen,"ALFWorld, seen",expel,ExpeL,98,4.0816,1.6667,7.2165
+majority,regression,valid-seen,"ALFWorld, seen",ace,ACE,98,2.0408,0.6734,3.7801
+majority,regression,valid-seen,"ALFWorld, seen",00I-inject,Knowledge Injection,98,1.3605,0.0000,3.7801
+majority,regression,valid-seen,"ALFWorld, seen",RCI-traverse,WikiTrace,98,0.0000,0.0000,0.0000
+majority,regression,valid-unseen,"ALFWorld, unseen",awm,AWM,127,2.0997,0.5249,3.9683
+majority,regression,valid-unseen,"ALFWorld, unseen",reasoningbank,ReasoningBank,127,5.5118,2.6247,8.6614
+majority,regression,valid-unseen,"ALFWorld, unseen",expel,ExpeL,127,1.8373,0.2604,3.8572
+majority,regression,valid-unseen,"ALFWorld, unseen",ace,ACE,127,6.2992,3.7333,9.1146
+majority,regression,valid-unseen,"ALFWorld, unseen",00I-inject,Knowledge Injection,127,2.8871,0.8065,5.3333
+majority,regression,valid-unseen,"ALFWorld, unseen",RCI-traverse,WikiTrace,127,1.3123,0.0000,3.2787
+majority,regression,scienceworld,ScienceWorld,awm,AWM,71,17.3709,11.2676,24.0196
+majority,regression,scienceworld,ScienceWorld,reasoningbank,ReasoningBank,71,12.6761,7.8431,18.0556
+majority,regression,scienceworld,ScienceWorld,expel,ExpeL,71,16.4319,10.9589,22.2257
+majority,regression,scienceworld,ScienceWorld,ace,ACE,71,8.4507,3.7037,14.0358
+majority,regression,scienceworld,ScienceWorld,00I-inject,Knowledge Injection,71,7.5117,3.2864,12.3810
+majority,regression,scienceworld,ScienceWorld,RCI-traverse,WikiTrace,71,4.6948,1.8018,8.2126
+majority,regression,plancraft-seen,"PlanCraft, seen",awm,AWM,71,7.0423,3.0702,11.7123
+majority,regression,plancraft-seen,"PlanCraft, seen",reasoningbank,ReasoningBank,71,4.2254,1.3889,7.6577
+majority,regression,plancraft-seen,"PlanCraft, seen",expel,ExpeL,71,9.3897,4.6948,14.6205
+majority,regression,plancraft-seen,"PlanCraft, seen",ace,ACE,71,4.2254,1.8265,6.9892
+majority,regression,plancraft-seen,"PlanCraft, seen",00I-inject,Knowledge Injection,71,3.7559,0.9009,7.4627
+majority,regression,plancraft-seen,"PlanCraft, seen",RCI-traverse,WikiTrace,71,0.9390,0.0000,2.4155
+majority,regression,plancraft-unseen,"PlanCraft, unseen",awm,AWM,54,14.8148,8.0000,22.2222
+majority,regression,plancraft-unseen,"PlanCraft, unseen",reasoningbank,ReasoningBank,54,11.7284,6.0000,18.2390
+majority,regression,plancraft-unseen,"PlanCraft, unseen",expel,ExpeL,54,17.2840,9.3020,26.1438
+majority,regression,plancraft-unseen,"PlanCraft, unseen",ace,ACE,54,2.4691,0.5747,4.9645
+majority,regression,plancraft-unseen,"PlanCraft, unseen",00I-inject,Knowledge Injection,54,7.4074,2.4691,13.1944
+majority,regression,plancraft-unseen,"PlanCraft, unseen",RCI-traverse,WikiTrace,54,4.3210,1.2579,8.0460
+majority,regression,retail,"$\tau^3$-bench, Retail",awm,AWM,70,10.4762,4.9751,16.6667
+majority,regression,retail,"$\tau^3$-bench, Retail",reasoningbank,ReasoningBank,70,9.0476,4.5662,14.1553
+majority,regression,retail,"$\tau^3$-bench, Retail",expel,ExpeL,70,13.3333,8.5714,18.5714
+majority,regression,retail,"$\tau^3$-bench, Retail",ace,ACE,70,9.0476,5.2381,13.1455
+majority,regression,retail,"$\tau^3$-bench, Retail",00I-inject,Knowledge Injection,70,11.4286,6.9652,16.4103
+majority,regression,retail,"$\tau^3$-bench, Retail",RCI-traverse,WikiTrace,70,7.6190,3.8095,11.8721
+majority,regression,test-normal,"AppWorld, normal",awm,AWM,85,10.1961,5.7339,15.2263
+majority,regression,test-normal,"AppWorld, normal",reasoningbank,ReasoningBank,85,7.4510,3.7037,11.8519
+majority,regression,test-normal,"AppWorld, normal",expel,ExpeL,85,11.3725,7.1161,16.2396
+majority,regression,test-normal,"AppWorld, normal",ace,ACE,85,8.2353,4.7058,12.1864
+majority,regression,test-normal,"AppWorld, normal",00I-inject,Knowledge Injection,85,7.0588,3.4091,11.3725
+majority,regression,test-normal,"AppWorld, normal",RCI-traverse,WikiTrace,85,3.5294,1.5326,5.8140
+majority,regression,test-challenge,"AppWorld, challenge",awm,AWM,73,7.7626,3.8961,12.0773
+majority,regression,test-challenge,"AppWorld, challenge",reasoningbank,ReasoningBank,73,13.6986,8.6957,18.8608
+majority,regression,test-challenge,"AppWorld, challenge",expel,ExpeL,73,14.6119,9.6615,20.0000
+majority,regression,test-challenge,"AppWorld, challenge",ace,ACE,73,12.3288,7.6190,17.3913
+majority,regression,test-challenge,"AppWorld, challenge",00I-inject,Knowledge Injection,73,10.9589,6.6667,15.4589
+majority,regression,test-challenge,"AppWorld, challenge",RCI-traverse,WikiTrace,73,13.2420,8.0952,18.9815
+unanimous,gain,valid-seen,"ALFWorld, seen",awm,AWM,2,0.0000,0.0000,0.0000
+unanimous,gain,valid-seen,"ALFWorld, seen",reasoningbank,ReasoningBank,2,0.0000,0.0000,0.0000
+unanimous,gain,valid-seen,"ALFWorld, seen",expel,ExpeL,2,16.6667,0.0000,33.3333
+unanimous,gain,valid-seen,"ALFWorld, seen",ace,ACE,2,83.3333,66.6667,100.0000
+unanimous,gain,valid-seen,"ALFWorld, seen",00I-inject,Knowledge Injection,2,0.0000,0.0000,0.0000
+unanimous,gain,valid-seen,"ALFWorld, seen",RCI-traverse,WikiTrace,2,33.3333,33.3333,33.3333
+unanimous,gain,valid-unseen,"ALFWorld, unseen",awm,AWM,2,66.6667,33.3333,100.0000
+unanimous,gain,valid-unseen,"ALFWorld, unseen",reasoningbank,ReasoningBank,2,33.3333,33.3333,33.3333
+unanimous,gain,valid-unseen,"ALFWorld, unseen",expel,ExpeL,2,83.3333,66.6667,100.0000
+unanimous,gain,valid-unseen,"ALFWorld, unseen",ace,ACE,2,100.0000,100.0000,100.0000
+unanimous,gain,valid-unseen,"ALFWorld, unseen",00I-inject,Knowledge Injection,2,100.0000,100.0000,100.0000
+unanimous,gain,valid-unseen,"ALFWorld, unseen",RCI-traverse,WikiTrace,2,100.0000,100.0000,100.0000
+unanimous,gain,scienceworld,ScienceWorld,awm,AWM,16,39.5833,22.8070,56.8627
+unanimous,gain,scienceworld,ScienceWorld,reasoningbank,ReasoningBank,16,25.0000,10.2564,40.9120
+unanimous,gain,scienceworld,ScienceWorld,expel,ExpeL,16,43.7500,24.4444,63.6364
+unanimous,gain,scienceworld,ScienceWorld,ace,ACE,16,62.5000,43.1373,80.5556
+unanimous,gain,scienceworld,ScienceWorld,00I-inject,Knowledge Injection,16,56.2500,33.3333,76.9231
+unanimous,gain,scienceworld,ScienceWorld,RCI-traverse,WikiTrace,16,56.2500,36.1111,75.0000
+unanimous,gain,plancraft-seen,"PlanCraft, seen",awm,AWM,18,25.9259,13.7255,38.8889
+unanimous,gain,plancraft-seen,"PlanCraft, seen",reasoningbank,ReasoningBank,18,51.8519,35.0000,68.5185
+unanimous,gain,plancraft-seen,"PlanCraft, seen",expel,ExpeL,18,22.2222,13.3333,31.4815
+unanimous,gain,plancraft-seen,"PlanCraft, seen",ace,ACE,18,88.8889,75.4386,98.2456
+unanimous,gain,plancraft-seen,"PlanCraft, seen",00I-inject,Knowledge Injection,18,62.9630,47.0588,78.4349
+unanimous,gain,plancraft-seen,"PlanCraft, seen",RCI-traverse,WikiTrace,18,79.6296,62.7451,94.1176
+unanimous,gain,plancraft-unseen,"PlanCraft, unseen",awm,AWM,26,12.8205,2.7778,25.3968
+unanimous,gain,plancraft-unseen,"PlanCraft, unseen",reasoningbank,ReasoningBank,26,24.3590,12.8205,37.6812
+unanimous,gain,plancraft-unseen,"PlanCraft, unseen",expel,ExpeL,26,10.2564,2.5641,19.7531
+unanimous,gain,plancraft-unseen,"PlanCraft, unseen",ace,ACE,26,79.4872,66.6667,91.1765
+unanimous,gain,plancraft-unseen,"PlanCraft, unseen",00I-inject,Knowledge Injection,26,39.7436,25.6410,54.3874
+unanimous,gain,plancraft-unseen,"PlanCraft, unseen",RCI-traverse,WikiTrace,26,60.2564,45.2381,74.5098
+unanimous,gain,retail,"$\tau^3$-bench, Retail",awm,AWM,3,0.0000,0.0000,0.0000
+unanimous,gain,retail,"$\tau^3$-bench, Retail",reasoningbank,ReasoningBank,3,11.1111,0.0000,33.3333
+unanimous,gain,retail,"$\tau^3$-bench, Retail",expel,ExpeL,3,11.1111,0.0000,33.3333
+unanimous,gain,retail,"$\tau^3$-bench, Retail",ace,ACE,3,22.2222,0.0000,33.3333
+unanimous,gain,retail,"$\tau^3$-bench, Retail",00I-inject,Knowledge Injection,3,22.2222,0.0000,66.6667
+unanimous,gain,retail,"$\tau^3$-bench, Retail",RCI-traverse,WikiTrace,3,11.1111,0.0000,33.3333
+unanimous,gain,test-normal,"AppWorld, normal",awm,AWM,17,39.2157,23.5245,56.2500
+unanimous,gain,test-normal,"AppWorld, normal",reasoningbank,ReasoningBank,17,33.3333,17.9487,50.0000
+unanimous,gain,test-normal,"AppWorld, normal",expel,ExpeL,17,39.2157,21.5686,57.5758
+unanimous,gain,test-normal,"AppWorld, normal",ace,ACE,17,52.9412,33.3333,72.7273
+unanimous,gain,test-normal,"AppWorld, normal",00I-inject,Knowledge Injection,17,54.9020,35.4167,73.8095
+unanimous,gain,test-normal,"AppWorld, normal",RCI-traverse,WikiTrace,17,56.8627,36.7787,76.1905
+unanimous,gain,test-challenge,"AppWorld, challenge",awm,AWM,14,11.9048,2.3810,24.4444
+unanimous,gain,test-challenge,"AppWorld, challenge",reasoningbank,ReasoningBank,14,9.5238,0.0000,21.2121
+unanimous,gain,test-challenge,"AppWorld, challenge",expel,ExpeL,14,14.2857,2.3810,28.5714
+unanimous,gain,test-challenge,"AppWorld, challenge",ace,ACE,14,28.5714,7.4074,52.3810
+unanimous,gain,test-challenge,"AppWorld, challenge",00I-inject,Knowledge Injection,14,19.0476,0.0000,41.0256
+unanimous,gain,test-challenge,"AppWorld, challenge",RCI-traverse,WikiTrace,14,23.8095,2.7778,48.1481
+unanimous,regression,valid-seen,"ALFWorld, seen",awm,AWM,89,1.4981,0.0000,3.4884
+unanimous,regression,valid-seen,"ALFWorld, seen",reasoningbank,ReasoningBank,89,3.7453,1.5152,6.3670
+unanimous,regression,valid-seen,"ALFWorld, seen",expel,ExpeL,89,3.3708,1.1628,5.8608
+unanimous,regression,valid-seen,"ALFWorld, seen",ace,ACE,89,1.8727,0.3745,3.6232
+unanimous,regression,valid-seen,"ALFWorld, seen",00I-inject,Knowledge Injection,89,0.0000,0.0000,0.0000
+unanimous,regression,valid-seen,"ALFWorld, seen",RCI-traverse,WikiTrace,89,0.0000,0.0000,0.0000
+unanimous,regression,valid-unseen,"ALFWorld, unseen",awm,AWM,120,1.9444,0.5290,3.8889
+unanimous,regression,valid-unseen,"ALFWorld, unseen",reasoningbank,ReasoningBank,120,5.0000,2.3599,7.9372
+unanimous,regression,valid-unseen,"ALFWorld, unseen",expel,ExpeL,120,1.3889,0.0000,3.1884
+unanimous,regression,valid-unseen,"ALFWorld, unseen",ace,ACE,120,6.1111,3.5519,8.9636
+unanimous,regression,valid-unseen,"ALFWorld, unseen",00I-inject,Knowledge Injection,120,2.5000,0.5556,4.8388
+unanimous,regression,valid-unseen,"ALFWorld, unseen",RCI-traverse,WikiTrace,120,1.1111,0.0000,3.1339
+unanimous,regression,scienceworld,ScienceWorld,awm,AWM,48,8.3333,3.6232,14.0741
+unanimous,regression,scienceworld,ScienceWorld,reasoningbank,ReasoningBank,48,4.8611,1.8510,8.5106
+unanimous,regression,scienceworld,ScienceWorld,expel,ExpeL,48,9.7222,4.9645,15.1515
+unanimous,regression,scienceworld,ScienceWorld,ace,ACE,48,7.6389,1.6260,14.9660
+unanimous,regression,scienceworld,ScienceWorld,00I-inject,Knowledge Injection,48,4.1667,0.7752,8.3333
+unanimous,regression,scienceworld,ScienceWorld,RCI-traverse,WikiTrace,48,2.0833,0.0000,5.5556
+unanimous,regression,plancraft-seen,"PlanCraft, seen",awm,AWM,64,4.1667,0.5952,8.6207
+unanimous,regression,plancraft-seen,"PlanCraft, seen",reasoningbank,ReasoningBank,64,2.0833,0.4762,4.3011
+unanimous,regression,plancraft-seen,"PlanCraft, seen",expel,ExpeL,64,5.7292,1.7857,10.3825
+unanimous,regression,plancraft-seen,"PlanCraft, seen",ace,ACE,64,3.1250,1.0101,5.7471
+unanimous,regression,plancraft-seen,"PlanCraft, seen",00I-inject,Knowledge Injection,64,2.6042,0.0000,5.9701
+unanimous,regression,plancraft-seen,"PlanCraft, seen",RCI-traverse,WikiTrace,64,0.5208,0.0000,1.7241
+unanimous,regression,plancraft-unseen,"PlanCraft, unseen",awm,AWM,41,3.2520,0.7407,6.6667
+unanimous,regression,plancraft-unseen,"PlanCraft, unseen",reasoningbank,ReasoningBank,41,4.0650,0.7576,8.5714
+unanimous,regression,plancraft-unseen,"PlanCraft, unseen",expel,ExpeL,41,4.8780,0.7752,10.3175
+unanimous,regression,plancraft-unseen,"PlanCraft, unseen",ace,ACE,41,1.6260,0.0000,4.1667
+unanimous,regression,plancraft-unseen,"PlanCraft, unseen",00I-inject,Knowledge Injection,41,3.2520,0.0000,8.3333
+unanimous,regression,plancraft-unseen,"PlanCraft, unseen",RCI-traverse,WikiTrace,41,0.8130,0.0000,2.7778
+unanimous,regression,retail,"$\tau^3$-bench, Retail",awm,AWM,55,6.0606,1.7241,11.6667
+unanimous,regression,retail,"$\tau^3$-bench, Retail",reasoningbank,ReasoningBank,55,4.8485,1.2346,9.5238
+unanimous,regression,retail,"$\tau^3$-bench, Retail",expel,ExpeL,55,11.5152,6.2893,17.6101
+unanimous,regression,retail,"$\tau^3$-bench, Retail",ace,ACE,55,7.2727,3.5088,11.5385
+unanimous,regression,retail,"$\tau^3$-bench, Retail",00I-inject,Knowledge Injection,55,8.4848,4.2424,13.3333
+unanimous,regression,retail,"$\tau^3$-bench, Retail",RCI-traverse,WikiTrace,55,6.6667,3.0864,10.9091
+unanimous,regression,test-normal,"AppWorld, normal",awm,AWM,72,5.5556,2.2222,9.4595
+unanimous,regression,test-normal,"AppWorld, normal",reasoningbank,ReasoningBank,72,4.6296,1.4085,8.6957
+unanimous,regression,test-normal,"AppWorld, normal",expel,ExpeL,72,7.8704,4.2252,12.0833
+unanimous,regression,test-normal,"AppWorld, normal",ace,ACE,72,8.7963,4.8246,13.3333
+unanimous,regression,test-normal,"AppWorld, normal",00I-inject,Knowledge Injection,72,4.6296,1.2821,9.0090
+unanimous,regression,test-normal,"AppWorld, normal",RCI-traverse,WikiTrace,72,3.2407,1.2048,5.7018
+unanimous,regression,test-challenge,"AppWorld, challenge",awm,AWM,58,6.3218,2.5641,10.7143
+unanimous,regression,test-challenge,"AppWorld, challenge",reasoningbank,ReasoningBank,58,9.1954,5.2083,13.4503
+unanimous,regression,test-challenge,"AppWorld, challenge",expel,ExpeL,58,11.4943,6.7901,16.6667
+unanimous,regression,test-challenge,"AppWorld, challenge",ace,ACE,58,9.7701,4.8608,15.2554
+unanimous,regression,test-challenge,"AppWorld, challenge",00I-inject,Knowledge Injection,58,8.0460,4.0230,12.5683
+unanimous,regression,test-challenge,"AppWorld, challenge",RCI-traverse,WikiTrace,58,10.9195,5.4545,16.9700
