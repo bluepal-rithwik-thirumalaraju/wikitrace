@@ -2,8 +2,6 @@ name: WikiTrace OpenAI smoke test
 
 on:
   workflow_dispatch:
-  push:
-    branches: [codex/openai-smoke-test]
 
 permissions:
   contents: read
