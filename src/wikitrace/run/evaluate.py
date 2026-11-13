@@ -374,6 +374,10 @@ def _default_traverse_runner(cfg: Any, api_key: str | None, harness: Any = None)
         override = getattr(harness, name, None)
         return getattr(tc, name) if override is None else override
 
+    runner_options = (
+        {"max_output_tokens": cfg.models.default.max_tokens}
+        if tc.provider == "openai" else {}
+    )
     return PiTraverseRunner(
         pi_cli=tc.pi_cli,
         model=cfg.models.default.model,
@@ -390,6 +394,7 @@ def _default_traverse_runner(cfg: Any, api_key: str | None, harness: Any = None)
         network_policy=tc.network_policy,
         allowed_hosts=list(getattr(harness, "allowed_hosts", ()) or ()),
         openrouter_providers=cfg.llm.openrouter_providers,
+        **runner_options,
     )
 
 

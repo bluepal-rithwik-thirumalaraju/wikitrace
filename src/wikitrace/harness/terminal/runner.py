@@ -17,6 +17,7 @@ from typing import Any, Callable, Mapping, Optional
 
 from wikitrace.harness.environment.protocol import EPISODE_OVER, request
 from wikitrace.harness.environment.tool import CITATION_ENV_VAR, SOCKET_ENV_VAR, SOCKET_NAME, EnvTool
+from wikitrace.harness.llm.credentials import env_value
 from wikitrace.harness.terminal.docker import (
     ENV_EXT_DIR,
     _PI_BASH_TIMEOUT_VAR,
@@ -264,12 +265,12 @@ class PiTraverseRunner(TraverseRunner):
         env = os.environ.copy()
         env[_PI_BASH_TIMEOUT_VAR] = f"{self.cmd_timeout:g}"
         if self.provider == "openrouter":
-            if self.api_key:
-                env["OPENROUTER_API_KEY"] = self.api_key
+            if key := self.api_key or env_value("OPENROUTER_API_KEY"):
+                env["OPENROUTER_API_KEY"] = key
         else:
             env["OPENAI_BASE_URL"] = self.base_url
-            if self.api_key:
-                env["OPENAI_API_KEY"] = self.api_key
+            if key := self.api_key or env_value("OPENAI_API_KEY"):
+                env["OPENAI_API_KEY"] = key
         return env
 
     def _llm_host_port(self) -> tuple[str, int]:
@@ -338,7 +339,10 @@ class PiTraverseRunner(TraverseRunner):
         work = Path(tempfile.mkdtemp(prefix="pi-traverse-"))
         sys_file = work / "_system_prompt.txt"
         sys_file.write_text(system_prompt, encoding="utf-8")
-        _write_pi_agent_dir(work, self.model, self.max_output_tokens, self.openrouter_providers)
+        _write_pi_agent_dir(
+            work, self.model, self.max_output_tokens, self.openrouter_providers,
+            provider_name=self.provider, base_url=self.base_url,
+        )
         (work / "files").mkdir(exist_ok=True)
         ro_groups = readonly_groups(readonly_files or {})
 

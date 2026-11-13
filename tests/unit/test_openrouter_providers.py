@@ -92,7 +92,11 @@ def test_pi_models_json_for_registry_models_is_unchanged(tmp_path):
 
 
 def test_pi_models_json_defines_unlisted_models_with_routing_and_context(tmp_path):
-    for model, context in (("z-ai/glm-5.3-flash", 1048575), ("qwen/qwen3.8-flash", 1000000)):
+    for model, context in (
+        ("nvidia/nemotron-3.5-super-vl:free", 1000000),
+        ("z-ai/glm-5.3-flash", 1048575),
+        ("qwen/qwen3.8-flash", 1000000),
+    ):
         d = _write_pi_agent_dir(tmp_path / model.replace("/", "_"), model, 16384, ["together"])
         provider = json.loads((d / "models.json").read_text())["providers"]["openrouter"]
         routing = {"order": ["together"], "only": ["together"]}

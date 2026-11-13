@@ -1,0 +1,9 @@
+# One training task and one test task in a disposable E2B Linux VM.
+extends: plancraft-openai-smoke.yaml
+
+experiment:
+  output_root: outputs/openai-e2b-smoke
+
+traverse:
+  # The E2B VM isolates the whole checkout. Pi itself runs as a subprocess in that VM.
+  sandbox: none

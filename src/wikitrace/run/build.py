@@ -14,6 +14,7 @@ from wikitrace.config import (
 )
 from wikitrace.envs import train_group_for
 from wikitrace.harness.llm import LLMClient, OpenRouterClient
+from wikitrace.harness.llm.openai import OpenAIClient
 from wikitrace.harness.llm.openrouter import provider_routing
 from wikitrace.harness.prompts import prompts_source_hash
 from wikitrace.memory.compiler import read_episodes
@@ -31,8 +32,18 @@ def _transport(spec: RunSpec) -> Any:
     if spec.transport is not None:
         return spec.transport
     cfg = spec.cfg
-    return OpenRouterClient(base_url=cfg.llm.base_url, timeout=cfg.llm.request_timeout,
-                            api_key=spec.api_key, providers=cfg.llm.openrouter_providers)
+    providers = {cfg.models.default.provider} | {
+        cfg.models.for_role(role).provider for role in cfg.models.roles
+    }
+    if len(providers) != 1:
+        raise ValueError(f"A run must use one LLM provider, got {sorted(providers)}")
+    if cfg.models.default.provider == "openai":
+        return OpenAIClient(base_url=cfg.llm.base_url, timeout=cfg.llm.request_timeout,
+                            api_key=spec.api_key)
+    if cfg.models.default.provider == "openrouter":
+        return OpenRouterClient(base_url=cfg.llm.base_url, timeout=cfg.llm.request_timeout,
+                                api_key=spec.api_key, providers=cfg.llm.openrouter_providers)
+    raise ValueError(f"Unknown LLM provider: {cfg.models.default.provider!r}")
 
 
 def _split_hash(train_ids: list[str], test_ids: list[str]) -> str:
@@ -85,7 +96,8 @@ def generate_train_runs(spec: RunSpec, corpus_dir: Path, transport: Any) -> None
         "train_step_ids": train_ids, "test_sample_ids": test_ids,
         "split_hash": _split_hash(train_ids, test_ids),
         "model_ids": gather_model_ids(cfg.models), "model_validation": model_validation,
-        "openrouter_routing": provider_routing(cfg.llm.openrouter_providers),
+        **({"openrouter_routing": provider_routing(cfg.llm.openrouter_providers)}
+           if cfg.models.default.provider == "openrouter" else {}),
         "provider_calls": provider_counts(corpus_dir / "llm_calls.jsonl"),
         "fp8": spec.fp["fp8"], "seed": cfg.experiment.seed, "start_ts": start_ts, "end_ts": datetime.now(timezone.utc).isoformat(),
     }

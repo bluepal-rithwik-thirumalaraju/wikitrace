@@ -1,4 +1,4 @@
-"""Token/cost extraction from OpenRouter responses."""
+"""Token/cost extraction from OpenRouter or direct OpenAI responses."""
 
 from __future__ import annotations
 
@@ -16,8 +16,8 @@ class Usage:
 
 
 def parse_usage(response_json: dict[str, Any]) -> Usage:
-    """Extract usage from an OpenRouter chat-completion response."""
-    # `cost` arrives only when `usage: {include: true}` is requested.
+    """Extract usage from a chat-completion response."""
+    # OpenRouter reports the charge; the direct OpenAI transport adds an estimate.
     usage = response_json.get("usage") or {}
     prompt = int(usage.get("prompt_tokens", 0) or 0)
     completion = int(usage.get("completion_tokens", 0) or 0)

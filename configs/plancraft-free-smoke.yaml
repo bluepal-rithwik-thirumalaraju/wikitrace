@@ -1,0 +1,17 @@
+# Small OpenRouter free-tier check; not a paper reproduction.
+extends: plancraft.yaml
+
+dataset:
+  train_size: 1
+  test_size: 1
+
+models:
+  default:
+    model: nvidia/nemotron-3.5-super-vl:free
+
+experiment:
+  output_root: outputs/free-smoke
+
+llm:
+  # The paper config pins Alibaba, while this free endpoint is served by NVIDIA.
+  openrouter_providers: []

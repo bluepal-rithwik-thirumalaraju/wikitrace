@@ -10,6 +10,7 @@ from typing import Any, Callable, Optional, Type, TypeVar
 
 from pydantic import BaseModel, ValidationError
 
+from wikitrace.harness.llm.openai import OpenAIClient
 from wikitrace.harness.llm.openrouter import ChatResponse, OpenRouterClient
 from wikitrace.harness.llm.structured_output import (
     StructuredParseError,
@@ -35,7 +36,7 @@ class StructuredResult:
     raw_response: dict[str, Any]
 
 
-Transport = OpenRouterClient
+Transport = OpenRouterClient | OpenAIClient
 
 
 class LLMClient:

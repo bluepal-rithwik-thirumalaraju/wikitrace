@@ -68,6 +68,52 @@ DATA_ROOT=/path/to/data scripts/setup/appworld.sh && scripts/setup/appworld_env_
 
 A trial is one replicate: `build --trial N` and `run --trial N` go together. `configs/base.yaml` holds the paper's settings, and each benchmark has its own config.
 
+### Direct OpenAI smoke test
+
+To test the pipeline with your own OpenAI API key, put `OPENAI_API_KEY=...` in `.env` and use
+`configs/plancraft-openai-smoke.yaml`. This config uses `gpt-6-luna` and one training and one test
+task. Set and enforce a hard project spend limit in your OpenAI account before a paid run
+([OpenAI spend limits](https://developers.openai.com/api/docs/guides/spend-limits)). The key is
+read from `.env` automatically; process environment variables take precedence. Logged direct
+OpenAI costs are estimates based on token usage; check your API dashboard for billed charges.
+
+```bash
+scripts/setup/plancraft.sh
+uv run wikitrace build --config configs/plancraft-openai-smoke.yaml --benchmark plancraft --suite plancraft-seen --trial 0
+uv run wikitrace run --config configs/plancraft-openai-smoke.yaml --benchmark plancraft --suite plancraft-seen --trial 0 --method wikitrace
+```
+
+The direct OpenAI config keeps its outputs in `outputs/openai-smoke/` and does not change the paper's config.
+
+To run this smoke test away from your computer, use the
+[`WikiTrace OpenAI smoke test`](.github/workflows/openai-smoke.yml) GitHub Actions workflow on a
+repository you control. Add `OPENAI_API_KEY` as a repository Actions secret, then push the
+`codex/openai-smoke-test` branch. The hosted Ubuntu runner builds the
+repo's Docker sandbox and runs the same one-training-task, one-test-task config. It prints the
+test metrics and uploads only the metrics summary as an artifact. Set an OpenAI project spend
+limit before running it; the workflow's 180-minute timeout is a runtime limit, not a dollar cap.
+
+### E2B Cloud smoke test
+
+To run the one-task OpenAI PlanCraft smoke test in an isolated E2B Linux VM, add
+`E2B_API_KEY=...` and `OPENAI_API_KEY=...` to `.env`, then run:
+
+```bash
+uv run --with e2b python scripts/run_e2b_smoke.py --dry-run
+uv run --with e2b python scripts/run_e2b_smoke.py
+```
+
+The script uploads the current working tree, including local edits, while excluding `.env`,
+ignored data and outputs. It installs Python, Node, Pi and PlanCraft in the E2B VM, builds
+memory for one training task, tests one task, downloads the results archive to
+`outputs/wikitrace-e2b-results.tar.gz`, and shuts the VM down. The OpenAI key is passed only
+to the two benchmark commands as an E2B command environment variable. For an API-free check
+of the uploaded code, use `--offline-only`. E2B Cloud usage is billed separately from OpenAI.
+
+`configs/plancraft-openai-e2b-smoke.yaml` sets `traverse.sandbox: none` so Pi runs inside the
+E2B VM. This provides VM isolation from your computer, but Pi has access to the VM filesystem
+and network; it does not reproduce the paper's Docker network policy or per-session mounts.
+
 ### 1. Build the memory
 
 `build` runs the agent without memory on the training tasks of a suite. The compiler then reads each finished run and writes a compilation of it and up to three insights, each linked to that run. The result is the memory of one trial, stored under `outputs/corpus/`.

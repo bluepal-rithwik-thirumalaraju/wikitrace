@@ -1,0 +1,26 @@
+# Direct OpenAI API test: one train task and one test task, separate from paper outputs.
+extends: plancraft.yaml
+
+dataset:
+  train_size: 1
+  test_size: 1
+
+models:
+  default:
+    provider: openai
+    model: gpt-6-luna
+    reasoning_effort: none
+    max_tokens: 2048
+
+experiment:
+  output_root: outputs/openai-smoke
+
+llm:
+  base_url: https://api.openai.com/v1
+  max_retries: 1
+  openrouter_providers: []
+
+traverse:
+  provider: openai
+  base_url: https://api.openai.com/v1
+  max_turns: 15

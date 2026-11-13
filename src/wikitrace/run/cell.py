@@ -136,7 +136,8 @@ def run_cell(
         "prompts_hash": spec.fp["prompts_hash"], "git_commit": spec.git["commit"], "git_dirty": spec.git["dirty"],
         "seed": spec.cfg.experiment.seed, "models": {"default": spec.cfg.models.default.model},
         "model_validation": spec.transport.validate_models(gather_model_ids(spec.cfg.models)),
-        "openrouter_routing": provider_routing(spec.cfg.llm.openrouter_providers),
+        **({"openrouter_routing": provider_routing(spec.cfg.llm.openrouter_providers)}
+           if spec.cfg.models.default.provider == "openrouter" else {}),
         **({"data_file_hashes": h} if (h := _call(spec.dom.benchmark, "data_file_hashes")) else {}),
         **({"data_version": v} if (v := _call(spec.dom.benchmark, "data_version", spec.cfg.dataset)) else {}),
         **(_corpus_record(corpus_dir, len(items)) if corpus_dir is not None else {}),

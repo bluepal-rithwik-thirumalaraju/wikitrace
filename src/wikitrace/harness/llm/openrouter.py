@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-import os
 import time
 from dataclasses import dataclass
 from typing import Any
 
 import httpx
+
+from wikitrace.harness.llm.credentials import env_value
 
 
 class OpenRouterError(RuntimeError):
@@ -39,12 +40,12 @@ class ChatResponse:
 
 def load_api_keys() -> list[str]:
     """Resolve the pool of OpenRouter keys for parallel suite execution."""
-    multi = os.environ.get("OPENROUTER_API_KEYS", "").strip()
+    multi = env_value("OPENROUTER_API_KEYS")
     if multi:
         keys = [k.strip() for k in multi.split(",") if k.strip()]
         if keys:
             return keys
-    single = os.environ.get("OPENROUTER_API_KEY", "").strip()
+    single = env_value("OPENROUTER_API_KEY")
     if single:
         return [single]
     raise OpenRouterError("Neither OPENROUTER_API_KEYS nor OPENROUTER_API_KEY is set")

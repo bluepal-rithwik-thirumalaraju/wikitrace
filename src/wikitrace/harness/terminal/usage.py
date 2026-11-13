@@ -17,6 +17,10 @@ _PI_AGENT_DIR_NAME = ".pi-agent"
 PI_MAX_OUTPUT_TOKENS_CEILING = 32000
 # OpenRouter models absent from the bundled Pi registry, where Pi would drop their modelOverrides.
 _PI_UNLISTED_MODELS: dict[str, dict[str, Any]] = {
+    "nvidia/nemotron-3.5-super-vl:free": {
+        "contextWindow": 1000000,
+        "cost": {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0},
+    },
     "z-ai/glm-5.3-flash": {
         "contextWindow": 1048575,
         "cost": {"input": 0.15, "output": 0.5, "cacheRead": 0.03, "cacheWrite": 0},
@@ -30,8 +34,30 @@ _PI_UNLISTED_MODELS: dict[str, dict[str, Any]] = {
 
 def _write_pi_agent_dir(
     work: Path, model: str, max_output_tokens: int, providers: list[str] | None = None,
+    *, provider_name: str = "openrouter", base_url: str = "https://openrouter.ai/api/v1",
 ) -> Path:
     """Write ``<work>/.pi-agent/models.json`` carrying this model's output budget and routing."""
+    if provider_name == "openai":
+        if model != "gpt-6-luna":
+            raise ValueError(f"No Pi model definition for direct OpenAI model {model!r}")
+        provider = {
+            "baseUrl": base_url,
+            "apiKey": "OPENAI_API_KEY",
+            "api": "openai-responses",
+            "models": [{
+                "id": model, "reasoning": True, "input": ["text"],
+                "contextWindow": 1050000, "maxTokens": max_output_tokens,
+                "cost": {"input": 0.1, "output": 0.5, "cacheRead": 0.01, "cacheWrite": 0.125},
+            }],
+        }
+        d = work / _PI_AGENT_DIR_NAME
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "models.json").write_text(
+            json.dumps({"providers": {"openai": provider}}, indent=2), encoding="utf-8",
+        )
+        return d
+    if provider_name != "openrouter":
+        raise ValueError(f"Unknown Pi provider: {provider_name!r}")
     # The bundled Pi ships a stale 4096 for deepseek-v4-flash, the whole completion budget REASONING INCLUDED.
     override: dict[str, Any] = {"maxTokens": max_output_tokens}
     if providers:

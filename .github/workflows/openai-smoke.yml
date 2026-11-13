@@ -1,0 +1,88 @@
+name: WikiTrace OpenAI smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/openai-smoke-test]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wikitrace-openai-smoke-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plancraft:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10
+
+      - name: Install WikiTrace
+        run: uv sync --locked --extra dev --python 3.11
+
+      - name: Run focused offline tests
+        run: uv run pytest -q tests/unit/test_openai_smoke.py tests/unit/test_openrouter_providers.py
+
+      - name: Build Pi agent
+        run: bash scripts/setup/pi.sh
+
+      - name: Build Pi sandbox image
+        run: bash scripts/setup/sandbox_image.sh
+
+      - name: Install PlanCraft simulator
+        run: bash scripts/setup/plancraft.sh
+
+      - name: Build one training task
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          test -n "$OPENAI_API_KEY" || { echo 'Missing OPENAI_API_KEY Actions secret'; exit 1; }
+          uv run wikitrace build \
+            --config configs/plancraft-openai-smoke.yaml \
+            --benchmark plancraft --suite plancraft-seen --trial 0
+
+      - name: Test one task with WikiTrace memory
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          uv run wikitrace run \
+            --config configs/plancraft-openai-smoke.yaml \
+            --benchmark plancraft --suite plancraft-seen --trial 0 \
+            --method wikitrace
+
+      - name: Print test summary
+        if: always()
+        run: |
+          summary=outputs/openai-smoke/plancraft/plancraft-seen/wikitrace/trial-00/metrics/summary.json
+          if [ -f "$summary" ]; then
+            python -m json.tool "$summary"
+          else
+            echo 'No test summary produced.'
+          fi
+
+      - name: Save summary artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: wikitrace-openai-smoke-summary
+          path: outputs/openai-smoke/**/metrics/summary.json
+          if-no-files-found: ignore
+          retention-days: 7
