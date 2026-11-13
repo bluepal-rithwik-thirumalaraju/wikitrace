@@ -34,6 +34,7 @@ from wikitrace.harness.terminal.usage import (
     collect_call_usage,
     collect_session_stats,
 )
+from wikitrace.progress import progress
 
 
 @dataclass
@@ -412,6 +413,7 @@ class PiTraverseRunner(TraverseRunner):
                     target.symlink_to(host, target_is_directory=True)
                 cmd = [self.node_bin, pi_cli, *pi_args, "--system-prompt", str(sys_file)]
                 env = {**self._env(), **env_extra}
+            progress(f"Starting Pi session (model={self.model}, sandbox={self.sandbox}, max_turns={max_turns}, max_seconds={self.max_seconds:g})")
             proc = subprocess.Popen(
                 cmd, cwd=str(work), env=env,
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -531,6 +533,16 @@ class PiTraverseRunner(TraverseRunner):
         provider_error = ""
         provider_retries = 0
         retry_grace_until: float | None = None  # set while waiting for Pi's auto_retry_start
+        session_started = time.monotonic()
+        heartbeat_stop = threading.Event()
+
+        def _heartbeat() -> None:
+            while not heartbeat_stop.wait(60):
+                elapsed = int(time.monotonic() - session_started)
+                progress(f"Pi session active: {elapsed}s elapsed, turn {seen_turns}/{max_turns}")
+
+        heartbeat = threading.Thread(target=_heartbeat, daemon=True)
+        heartbeat.start()
         try:
             while True:
                 now = time.monotonic()
@@ -560,6 +572,7 @@ class PiTraverseRunner(TraverseRunner):
                             else "idle"
                         )
                 if reason is not None:
+                    progress(f"Pi session stopped by {reason} timeout after {int(time.monotonic() - session_started)}s")
                     turns.append({"turn": turn_idx, "type": "timeout", "reason": reason})
                     stopped_by = reason
                     break
@@ -580,6 +593,7 @@ class PiTraverseRunner(TraverseRunner):
                         context_frozen = citation_open
                 elif etype == "turn_start":
                     seen_turns += 1
+                    progress(f"Pi turn {seen_turns}/{max_turns} started")
                     if seen_turns > max_turns + 3:
                         turns.append({
                             "turn": turn_idx, "type": "timeout", "reason": "turn_cap",
@@ -605,6 +619,7 @@ class PiTraverseRunner(TraverseRunner):
                         continue
                     # The ONLY place a truncation is visible: logged usage normalises a `length` end to `tool_calls`.
                     last_stop_reason = str(msg.get("stopReason") or "")
+                    progress(f"Pi turn {seen_turns}/{max_turns} ended (stop_reason={last_stop_reason or 'unknown'})")
                     provider_error = (
                         str(msg.get("errorMessage") or "unknown provider error")
                         if last_stop_reason == "error" else ""
@@ -697,6 +712,7 @@ class PiTraverseRunner(TraverseRunner):
                 elif etype == "auto_retry_start":
                     retry_grace_until = None
                     provider_retries += 1
+                    progress(f"Pi provider retry {provider_retries} started")
                     seen_turns -= 1
                     turns.append({
                         "turn": turn_idx, "type": "provider_retry",
@@ -706,6 +722,7 @@ class PiTraverseRunner(TraverseRunner):
                     turn_idx += 1
                 elif etype == "auto_retry_end" and not event.get("success"):
                     provider_error = str(event.get("finalError") or provider_error)
+                    progress("Pi provider retries exhausted")
                     break
 
             if citation_open:
@@ -731,6 +748,11 @@ class PiTraverseRunner(TraverseRunner):
                 if src.exists():
                     shutil.move(str(src), str(out_dir / fn))
             read_set = list(dict.fromkeys(read_set))
+            progress(
+                f"Pi session finished after {int(time.monotonic() - session_started)}s "
+                f"(turns={seen_turns}, stopped_by={stopped_by or 'normal'}, "
+                f"provider_retries={provider_retries})"
+            )
             return TerminalResult(
                 sentinel=sentinel, sentinel_text=sentinel_text, final_text=final_text,
                 final_reasoning=final_reasoning, session_text="".join(text_parts),
@@ -748,6 +770,8 @@ class PiTraverseRunner(TraverseRunner):
                 provider_retries=provider_retries,
             )
         finally:
+            heartbeat_stop.set()
+            heartbeat.join(timeout=1)
             # ALWAYS, even on exception: kill the whole process group (a wedged child outlives `terminate`) and delete the scratch.
             try:
                 pgid = os.getpgid(proc.pid)

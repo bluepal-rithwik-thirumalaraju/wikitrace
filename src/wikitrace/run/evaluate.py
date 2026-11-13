@@ -14,6 +14,7 @@ from wikitrace.envs import DomainAdapter, MemoryBinding, Metrics
 from wikitrace.harness.llm import LLMClient, StructuredParseError
 from wikitrace.memory.citation import CITATION_ROLE
 from wikitrace.memory.compiler import compile_trajectory
+from wikitrace.progress import progress
 from wikitrace.run.resume import ResumePlan
 from wikitrace.run.spec import RunPaths, RunSpec
 
@@ -25,6 +26,7 @@ def _generate(
     memory_kwargs: dict | None = None,
 ) -> Any:
     """Run one episode through the terminal harness, logging its cost and any failure."""
+    progress(f"{phase} task {step_n + 1} started (sample {sample.id})")
     environment = domain.benchmark.harness_spec(sample.db_id).kind == "environment"
     outcome = _safe_run_traverse(
         domain, sample, traverse_runner, corpus_dir, session_root, traverse_cfg, repair_fn=repair_fn,
@@ -36,6 +38,11 @@ def _generate(
     _record_traverse_cost(
         outcome, llm, events, sample_id=sample.id, phase=phase, step_n=step_n,
         model_requested=getattr(traverse_runner, "model", ""), citation_expected=citation_expected,
+    )
+    progress(
+        f"{phase} task {step_n + 1} finished "
+        f"(stopped_by={getattr(outcome.result, 'stopped_by', '') or 'normal'}, "
+        f"generation_failed={bool(getattr(outcome, 'generation_failed', False))})"
     )
     return outcome
 

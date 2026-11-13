@@ -20,6 +20,7 @@ from wikitrace.harness.prompts import prompts_source_hash
 from wikitrace.memory.compiler import read_episodes
 from wikitrace.memory.recommend import Embedder, compute_recommendations, recommendation_path, write_recommendations
 from wikitrace.memory.store import compilation_to_markdown
+from wikitrace.progress import progress
 from wikitrace.run.evaluate import (
     DeadSessionGuard, ProviderErrorGuard, _compiler_profile, _default_traverse_runner, _generate,
     _make_sentinel_repair, _safe_compile, _safe_grade, verify_install,
@@ -62,6 +63,7 @@ def generate_train_runs(spec: RunSpec, corpus_dir: Path, transport: Any) -> None
     reset(corpus_dir)
     raw_dir = corpus_dir / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
+    progress("Validating configured models")
     model_validation = transport.validate_models(gather_model_ids(cfg.models))
     events = EventLogger(corpus_dir / "events.jsonl")
     llm_calls = JsonlWriter(corpus_dir / "llm_calls.jsonl")
@@ -72,8 +74,10 @@ def generate_train_runs(spec: RunSpec, corpus_dir: Path, transport: Any) -> None
     repair = _make_sentinel_repair(transport, cfg.models.default.model, cfg.models.default.reasoning_effort)
     start_ts = datetime.now(timezone.utc).isoformat()
     events.emit("corpus_started", db_id=spec.db_id, train_size=len(split.train))
+    progress(f"Training corpus started: {len(split.train)} task(s)")
     dead_guard, provider_guard = DeadSessionGuard(), ProviderErrorGuard()
     for step_n, sample in enumerate(split.train):
+        progress(f"Training task {step_n + 1}/{len(split.train)} started (sample {sample.id})")
         events.emit("step_started", phase="corpus", step=step_n, sample_id=sample.id)
         outcome = _generate(
             dom, sample, llm=llm, memory_text="", run_dir=corpus_dir, events=events, phase="corpus",
@@ -88,6 +92,7 @@ def generate_train_runs(spec: RunSpec, corpus_dir: Path, transport: Any) -> None
         dom.persist_train_task_files(step_dir, sample)
         # Beside raw/, not inside it: raw/ is mounted, and this holds the grader's reason.
         append_result(corpus_dir, step_dir.name, outcome.result)
+        progress(f"Training task {step_n + 1}/{len(split.train)} finished")
     llm_calls.close()
     verify_install(dom, cfg.dataset)
     train_ids, test_ids = [s.id for s in split.train], [s.id for s in split.test]
@@ -103,6 +108,7 @@ def generate_train_runs(spec: RunSpec, corpus_dir: Path, transport: Any) -> None
     }
     (corpus_dir / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
     events.emit("corpus_completed", db_id=spec.db_id)
+    progress("Training trajectories saved")
 
 
 def compile_train_runs(spec: RunSpec, corpus_dir: Path, transport: Any) -> None:
@@ -119,6 +125,7 @@ def compile_train_runs(spec: RunSpec, corpus_dir: Path, transport: Any) -> None:
     comps: list[Compilation] = []
     items: dict[str, list[dict[str, Any]]] = {}
     for step_dir in sorted((corpus_dir / "raw").glob("step-*")):
+        progress(f"Compiling {step_dir.name}")
         step_n = int(step_dir.name.split("-")[1])
         result = dom.read_result(step_dir)
         sample = by_id.get(result.sample_id)
@@ -132,17 +139,20 @@ def compile_train_runs(spec: RunSpec, corpus_dir: Path, transport: Any) -> None:
             corpus_dir, events, profile, confidence=cfg.memory.compiler_confidence,
         )
         if cr is None:
+            progress(f"Compilation failed for {step_dir.name}; see events.compile.jsonl")
             continue
         comps.append(cr.compilation)
         items[cr.compilation.step_id] = [i.model_dump() for i in cr.structured.parsed.candidate_insights]
         (comp_dir / f"{cr.compilation.step_id}.md").write_text(
             compilation_to_markdown(cr.compilation, raw_shape=spec.raw_shape), encoding="utf-8")
+        progress(f"Compiled {step_dir.name}")
     comps.sort(key=lambda c: c.step_id)
     (comp_dir / "compilations.jsonl").write_text("".join(
         json.dumps({**json.loads(c.model_dump_json()), "insight_items": items[c.step_id]},
                    ensure_ascii=False) + "\n" for c in comps), encoding="utf-8")
     llm_calls.close()
     events.emit("compile_completed", db_id=spec.db_id, n_compilations=len(comps))
+    progress(f"Compilation complete: {len(comps)} result(s)")
 
 
 def built_fp8(corpus_dir: Path) -> str:
@@ -215,7 +225,9 @@ def build(
     """Build the corpus and recommendations ``wikitrace run`` reads; return the corpus dir."""
     spec = resolve_spec(config_path, benchmark, suite, trial, transport=transport, api_key=api_key,
                         traverse_runner=traverse_runner)
+    progress(f"Build started: {benchmark}/{suite}, trial {trial}")
     transport = _transport(spec)
     corpus_dir = ensure_corpus(spec, transport)
     ensure_recommendations(spec, corpus_dir, transport)
+    progress(f"Build complete: {corpus_dir}")
     return corpus_dir
