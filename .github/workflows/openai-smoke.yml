@@ -52,7 +52,7 @@ jobs:
 
       - name: Build one training task
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || secrets.OPENAIKEY }}
         run: |
           test -n "$OPENAI_API_KEY" || { echo 'Missing OPENAI_API_KEY Actions secret'; exit 1; }
           uv run wikitrace build \
@@ -61,7 +61,7 @@ jobs:
 
       - name: Test one task with WikiTrace memory
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || secrets.OPENAIKEY }}
         run: |
           uv run wikitrace run \
             --config configs/plancraft-openai-smoke.yaml \

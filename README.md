@@ -92,6 +92,7 @@ repository you control. Add `OPENAI_API_KEY` as a repository Actions secret, the
 repo's Docker sandbox and runs the same one-training-task, one-test-task config. It prints the
 test metrics and uploads only the metrics summary as an artifact. Set an OpenAI project spend
 limit before running it; the workflow's 180-minute timeout is a runtime limit, not a dollar cap.
+The workflow also accepts an existing repository secret named `OPENAIKEY`.
 
 ### E2B Cloud smoke test
 
