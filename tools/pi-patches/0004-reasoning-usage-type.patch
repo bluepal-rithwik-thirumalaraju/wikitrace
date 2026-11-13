@@ -1,0 +1,17 @@
+Subject: [PATCH 0004] type the optional reasoning usage breakdown
+
+Patch 0003 adds the provider-reported reasoning token count to usage. Make that
+field optional in Pi's shared Usage type so TypeScript accepts the provider's
+object literal while other providers remain unchanged.
+
+--- a/packages/ai/src/types.ts
++++ b/packages/ai/src/types.ts
+@@ -166,6 +166,7 @@
+ 
+ export interface Usage {
+ 	input: number;
+ 	output: number;
++	reasoning?: number;
+ 	cacheRead: number;
+ 	cacheWrite: number;
+ 	totalTokens: number;
