@@ -2,6 +2,8 @@
 extends: plancraft.yaml
 
 dataset:
+  # PlanCraft has explicit train/test roles; size limits need this switch.
+  limit_explicit_split: true
   train_size: 1
   test_size: 1
 

@@ -19,6 +19,7 @@ def test_smoke_config_uses_direct_openai_and_tiny_split():
     cfg = load_config("configs/plancraft-openai-smoke.yaml")
     assert (cfg.models.default.provider, cfg.models.default.model) == ("openai", "gpt-6-luna")
     assert cfg.models.default.reasoning_effort == "none"
+    assert cfg.dataset.limit_explicit_split is True
     assert (cfg.dataset.train_size, cfg.dataset.test_size) == (1, 1)
     assert cfg.llm.base_url == cfg.traverse.base_url == "https://api.openai.com/v1"
     assert cfg.traverse.provider == "openai"

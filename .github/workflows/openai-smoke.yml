@@ -52,6 +52,18 @@ jobs:
       - name: Install PlanCraft simulator
         run: bash scripts/setup/plancraft.sh
 
+      - name: Verify smoke split sizes before API calls
+        run: |
+          uv run python - <<'PY'
+          from wikitrace.run.spec import load_split, resolve_spec
+
+          spec = resolve_spec('configs/plancraft-openai-smoke.yaml', 'plancraft', 'plancraft-seen', 0)
+          split = load_split(spec)
+          sizes = (len(split.train), len(split.test))
+          print(f'Smoke split: train={sizes[0]}, test={sizes[1]}', flush=True)
+          assert sizes == (1, 1), f'Expected one train and one test task; got {sizes}'
+          PY
+
       - name: Build one training task
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || secrets.OPENAIKEY }}
