@@ -22,6 +22,13 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Verify OpenAI smoke branch
+        run: |
+          test -f configs/plancraft-openai-smoke.yaml || {
+            echo 'Select the codex/openai-smoke-test branch when running this workflow.'
+            exit 1
+          }
+
       - name: Set up Python
         uses: actions/setup-python@v7
         with:

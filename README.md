@@ -87,8 +87,9 @@ The direct OpenAI config keeps its outputs in `outputs/openai-smoke/` and does n
 
 To run this smoke test away from your computer, use the
 [`WikiTrace OpenAI smoke test`](.github/workflows/openai-smoke.yml) GitHub Actions workflow on a
-repository you control. Add `OPENAI_API_KEY` as a repository Actions secret, then push the
-`codex/openai-smoke-test` branch. The hosted Ubuntu runner builds the
+repository you control. Add `OPENAI_API_KEY` as a repository Actions secret. In GitHub Actions,
+choose **WikiTrace OpenAI smoke test**,
+click **Run workflow**, and select `codex/openai-smoke-test`. The hosted Ubuntu runner builds the
 repo's Docker sandbox and runs the same one-training-task, one-test-task config. It prints the
 test metrics and uploads only the metrics summary as an artifact. Set an OpenAI project spend
 limit before running it; the workflow's 180-minute timeout is a runtime limit, not a dollar cap.
